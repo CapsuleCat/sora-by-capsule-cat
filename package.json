@@ -3,6 +3,11 @@
   "displayName": "Sora by Capsule Cat",
   "description": "",
   "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:CapsuleCat/sora-by-capsule-cat.git"
+  },
   "engines": {
     "vscode": "^1.76.0"
   },
@@ -37,7 +42,8 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "build": "vsce package"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",

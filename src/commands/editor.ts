@@ -1,45 +1,6 @@
 import * as vscode from "vscode";
 import { Sora } from "../sora/Sora";
-
-function negativeSeekLineContains(document: vscode.TextDocument, needle: string, startAt = 0): number {
-    let line = startAt;
-    while (line >= 0) {
-        if (document.lineAt(line).text.includes(needle)) {
-            return line;
-        }
-
-        line--;
-    }
-
-    return -1;
-}
-
-function forwardSeekLineContains(document: vscode.TextDocument, needle: string, startAt = 0): number {
-    let line = startAt;
-    while (line < document.lineCount) {
-        if (document.lineAt(line).text.includes(needle)) {
-            return line;
-        }
-
-        line++;
-    }
-
-    return -1;
-}
-
-function clean(dirty: string): string {
-    // Replace "/*" with "/* " and "*/" with " */" to prevent comments from being removed
-    let toReturn = dirty.replace(/\/\*(\/*)?/g, '').replace(/\*\//g, '');
-
-    // Replace leading *
-    toReturn = toReturn.replace(/^\s*\*/gm, '');
-
-    // Replace [ChatGPT] with ""
-    toReturn = toReturn.replace(/\[ChatGPT\]/g, '');
-
-    // Trim
-    return toReturn.trim();
-}
+import { cleanInput } from "../utilities";
 
 export function getSubscription() {
     const typingDisposable = vscode.workspace.onDidChangeTextDocument((event) => {
@@ -58,12 +19,13 @@ export function getSubscription() {
             if (!initialTrigger) {
                 return;
             }
-            const triggerToken = '@ChatGPT';
+            const triggerToken = '@chatgpt';
             // Get current line
             const currentLine = editor.selection.active.line;
             const currentLineText = document.lineAt(currentLine).text;
 
-            if (!currentLineText.includes(triggerToken)) {
+            // includes case insensitive
+            if (!currentLineText.toLowerCase().includes(triggerToken)) {
                 return;
             }
 
@@ -84,7 +46,7 @@ export function getSubscription() {
                 fullText = document.lineAt(currentLine).text;
             }
             
-            const text = clean(fullText);
+            const text = cleanInput(fullText);
 
             const languageId = document.languageId;
             const apiKey = vscode.workspace.getConfiguration().get<string>('sora-by-capsule-cat.apiKey');
@@ -114,4 +76,30 @@ export function getSubscription() {
 
 
     return typingDisposable;
+}
+
+function negativeSeekLineContains(document: vscode.TextDocument, needle: string, startAt = 0): number {
+    let line = startAt;
+    while (line >= 0) {
+        if (document.lineAt(line).text.includes(needle)) {
+            return line;
+        }
+
+        line--;
+    }
+
+    return -1;
+}
+
+function forwardSeekLineContains(document: vscode.TextDocument, needle: string, startAt = 0): number {
+    let line = startAt;
+    while (line < document.lineCount) {
+        if (document.lineAt(line).text.includes(needle)) {
+            return line;
+        }
+
+        line++;
+    }
+
+    return -1;
 }

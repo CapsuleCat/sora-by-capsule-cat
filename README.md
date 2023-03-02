@@ -1,71 +1,97 @@
-# sora-by-capsule-cat README
+# Sora by Capsule Cat
 
-This is the README for your extension "sora-by-capsule-cat". After writing up a brief description, we recommend including the following sections.
+Sora is a VSCode extension for integrating ChatGPT into your coding workflow.
+
+Simply type a comment and then add `@ChatGPT` to trigger the extension. Sora will generate code based on the
+prompt given.
+
+Remember to get your [OpenAI API Key](https://beta.openai.com/account/api-keys) and add it to your VSCode settings with
+the command `Sora: Set API Key`.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Once your API key is set, you can use Sora by typing a comment and then adding `@ChatGPT` to the end of the comment.
 
-For example if there is an image subfolder under your extension project workspace:
+Typing `@ChatGPT` is the trigger keyword for Sora:
 
-\!\[feature X\]\(images/feature-x.png\)
+Example:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+```javascript
+/**
+ * Write "Hello world" to console.
+ * @ChatGPT
+ */
+```
+
+Response:
+
+```javascript
+/**
+ * Write "Hello world" to console.
+ * @ChatGPT
+ */
+console.log("Hello world");
+```
+
+Another example:
+
+```javascript
+/**
+ * Write a mocha test for a VScode extension. Open the command prompt, type "Sora: Set API Key".
+ * Then in the prompt that appears, type "Test" for the API Key.
+ * 
+ * Assert that the API key is stored in the VScode configuration.
+ * 
+ * @ChatGPT
+ */
+const vscode = require('vscode');
+const chai = require('chai');
+const assert = chai.assert;
+
+//Describe the test suite
+describe('API Testing', function() {
+
+  //Describe the individual test case
+  it('Should set API key in configuration', async function() {
+
+    //The command to open the Sora prompt
+    const command = 'Sora: Set API Key';
+
+    //Execute the command to open the prompt
+    await vscode.commands.executeCommand(command);
+
+    //Type in Test as the API Key
+    await vscode.commands.executeCommand('workbench.action.terminal.sendSequence', {
+      text: 'Test\n'
+    });
+
+    //Get the value of the API Key from configuration
+    const apiKey = vscode.workspace.getConfiguration().get('sora.apiKey');
+
+    //Assert the value is not empty and is equal to 'Test'
+    assert.isNotEmpty(apiKey);
+    assert.equal(apiKey, 'Test');
+
+  });
+});
+```
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Set your OpenAI API key once you install the extension.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+* `sora-by-capsule-cat.apiKey`: The API key for OpenAI
 
-## Known Issues
+## Development
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+This extension was developed using the VSCode Extension Generator.
 
-## Release Notes
+Generate a new bundle using `npm run bundle`. This requires `@vscode/vsce` to be installed globally:
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+```sh
+npm install -g @vscode/vsce
+```

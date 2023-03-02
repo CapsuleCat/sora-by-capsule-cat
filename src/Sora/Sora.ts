@@ -1,3 +1,4 @@
+import { extractResponseCode } from '../utilities';
 import { SORA_PROMPTS } from './prompt';
 import { Configuration, OpenAIApi } from "openai";
 
@@ -29,22 +30,8 @@ export class Sora {
             ]
         });
 
-        console.log(response);
-
         const choices = response.data.choices;
 
-        return extractCode(choices[0]?.message?.content ?? '');
+        return extractResponseCode(choices[0]?.message?.content ?? '');
     }
-}
-
-function extractCode(dirty: string) {
-    // Code will SOMETIMES appear in a code block
-    const potentialMatches = dirty.match(/```[\S]*([\s\S]*)?```/);
-    let code = dirty;
-
-    if (potentialMatches && potentialMatches.length > 1) {
-        code = potentialMatches[1];
-    }
-
-    return code.trim();
 }
