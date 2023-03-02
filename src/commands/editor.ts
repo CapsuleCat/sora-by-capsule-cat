@@ -14,7 +14,7 @@ export function getSubscription() {
 
         if (event.document === document) {
             const initialTrigger = event.contentChanges.some((change) => {
-                return change.text === 'T';
+                return change.text.toLowerCase() === 't';
             });
             if (!initialTrigger) {
                 return;
