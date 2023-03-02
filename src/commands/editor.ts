@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { Sora } from "../sora/sora";
+import { Sora } from "../sora/Sora";
 import { cleanInput } from "../utilities";
 
 export function getSubscription() {
@@ -61,15 +61,15 @@ export function getSubscription() {
 
             const sora = new Sora();
             sora.setApiKey(apiKey);
-            sora.generateText(languageId, text).then((response) => {
+            sora.generateText(languageId, text).then((response: string) => {
                 editor.edit((editBuilder) => {
                     // Debug
                     vscode.window.showInformationMessage(`Response: ${response}`);
                     editBuilder.insert(new vscode.Position(lastLine + 1, 0), `\n${response}\n`);
                 });
-            }).catch((error) => {
+            }).catch((error: unknown) => {
                 console.error(error);
-                vscode.window.showErrorMessage(`Error: ${error}`);
+                vscode.window.showErrorMessage(`Error: ${String(error)}`);
             });
         }
     });
