@@ -30,4 +30,5 @@ jobs:
           node-version: '16'
           cache: 'npm'
       - run: npm ci
+      - run: npm i -g @vscode/vsce
       - run: npm run build

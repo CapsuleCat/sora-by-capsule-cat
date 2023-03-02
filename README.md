@@ -1,5 +1,8 @@
 # Sora by Capsule Cat
 
+[![Push Check](https://github.com/CapsuleCat/sora-by-capsule-cat/actions/workflows/push.yml/badge.svg)](https://github.com/CapsuleCat/sora-by-capsule-cat/actions/workflows/push.yml)
+[![VSCode Marketplace](https://img.shields.io/badge/VSCode-Marketplace-blue)](https://marketplace.visualstudio.com/items?itemName=CapsuleCat.sora-by-capsule-cat)
+
 Sora is a VSCode extension for integrating ChatGPT into your coding workflow.
 
 Simply type a comment and then add `@ChatGPT` to trigger the extension. Sora will generate code based on the

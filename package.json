@@ -4,6 +4,7 @@
   "description": "",
   "version": "0.0.1",
   "license": "MIT",
+  "publisher": "CapsuleCat",
   "repository": {
     "type": "git",
     "url": "git@github.com:CapsuleCat/sora-by-capsule-cat.git"

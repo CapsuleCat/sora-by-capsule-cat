@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { Sora } from "../sora/Sora";
+import { Sora } from "../sora/sora";
 import { cleanInput } from "../utilities";
 
 export function getSubscription() {
