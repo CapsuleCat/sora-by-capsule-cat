@@ -4,19 +4,15 @@ import * as vscode from 'vscode';
 suite('Extension Test Suite', () => {
 	vscode.window.showInformationMessage('Start all tests.');
 
-	it('Should set API key in configuration', async function () {
-		const command = 'Sora: Set API Key';
+	test('Should set API key in configuration', async function () {
+		const command = 'sora-by-capsule-cat.setApiKey';
 
-		// Execute the command to open the prompt
-		await vscode.commands.executeCommand(command);
-
-		// Type in Test as the API Key
-		await vscode.commands.executeCommand('workbench.action.terminal.sendSequence', {
-			text: 'Test\n'
-		});
+		await vscode.commands.executeCommand(command,
+			"Test"			
+		);
 
 		//Get the value of the API Key from configuration
-		const apiKey = vscode.workspace.getConfiguration().get('sora.apiKey');
+		const apiKey = vscode.workspace.getConfiguration().get('sora-by-capsule-cat.apiKey');
 
 		assert.equal(apiKey, 'Test');
 	});

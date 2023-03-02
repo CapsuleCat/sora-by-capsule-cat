@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
 
 export function getSubscription() {
-    const apiKeyDisposable = vscode.commands.registerCommand('sora-by-capsule-cat.setApiKey', async () => {
-        const apiKey = await vscode.window.showInputBox({
+    const apiKeyDisposable = vscode.commands.registerCommand('sora-by-capsule-cat.setApiKey', async (maybeInput?: string) => {
+        const apiKey = maybeInput ?? await vscode.window.showInputBox({
             prompt: 'Enter your API key',
             value: '',
             ignoreFocusOut: true,

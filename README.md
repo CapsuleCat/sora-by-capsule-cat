@@ -33,49 +33,6 @@ Response:
 console.log("Hello world");
 ```
 
-Another example:
-
-```javascript
-/**
- * Write a mocha test for a VScode extension. Open the command prompt, type "Sora: Set API Key".
- * Then in the prompt that appears, type "Test" for the API Key.
- * 
- * Assert that the API key is stored in the VScode configuration.
- * 
- * @ChatGPT
- */
-const vscode = require('vscode');
-const chai = require('chai');
-const assert = chai.assert;
-
-//Describe the test suite
-describe('API Testing', function() {
-
-  //Describe the individual test case
-  it('Should set API key in configuration', async function() {
-
-    //The command to open the Sora prompt
-    const command = 'Sora: Set API Key';
-
-    //Execute the command to open the prompt
-    await vscode.commands.executeCommand(command);
-
-    //Type in Test as the API Key
-    await vscode.commands.executeCommand('workbench.action.terminal.sendSequence', {
-      text: 'Test\n'
-    });
-
-    //Get the value of the API Key from configuration
-    const apiKey = vscode.workspace.getConfiguration().get('sora.apiKey');
-
-    //Assert the value is not empty and is equal to 'Test'
-    assert.isNotEmpty(apiKey);
-    assert.equal(apiKey, 'Test');
-
-  });
-});
-```
-
 ## Requirements
 
 Set your OpenAI API key once you install the extension.
