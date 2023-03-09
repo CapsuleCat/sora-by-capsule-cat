@@ -1,9 +1,10 @@
 import * as vscode from "vscode";
 import { Sora } from "../sora/Sora";
 import { cleanInput } from "../utilities";
+import { SoraReference } from "../sora/prompt";
 
 export function getSubscription() {
-    const typingDisposable = vscode.workspace.onDidChangeTextDocument((event) => {
+    const typingDisposable = vscode.workspace.onDidChangeTextDocument(async (event) => {
         const editor = vscode.window.activeTextEditor;
 
         if (!editor) {
@@ -69,9 +70,12 @@ export function getSubscription() {
                 return;
             }
 
+            const uri = document.uri;
+            const references = await buildReferences(text, uri);
+
             const sora = new Sora();
             sora.setApiKey(apiKey);
-            sora.generateText(languageId, text).then((response: string) => {
+            sora.generateText(languageId, text, references).then((response: string) => {
                 editor.edit((editBuilder) => {
                     // Debug
                     vscode.window.showInformationMessage(`Response: ${response}`);
@@ -112,4 +116,28 @@ function forwardSeekLineContains(document: vscode.TextDocument, needle: string, 
     }
 
     return -1;
+}
+
+async function buildReferences(text: string, baseUri: vscode.Uri): Promise<SoraReference[]> {
+    // Find any matches for `[name](url)`
+    const regex = /\[(.*?)\]\((.*?)\)/g;
+    const matches = text.matchAll(regex);
+
+    // Resolve the paths to absolute paths
+    const references = Promise.all(Array.from(matches).map((match) => {
+        const uri = vscode.Uri.joinPath(baseUri, '..', match[2]);
+        return uri;
+    }).map(async (uri): Promise<SoraReference> => {
+        const document = await vscode.workspace.openTextDocument(uri);
+        const content = document.getText();
+        const language = document.languageId;
+
+        return {
+            content,
+            relativeFilePath: uri.toString(),
+            language,
+        };
+    }));
+
+    return references;
 }
