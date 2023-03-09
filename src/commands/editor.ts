@@ -35,12 +35,22 @@ export function getSubscription() {
             let fullText = '';
             let lastLine = currentLine;
             
-            if (blockStart !== -1 && blockEnd !== -1) {
-                fullText = document.getText(new vscode.Range(blockStart, 0, blockEnd, document.lineAt(blockEnd).range.end.character));
-                lastLine = blockEnd;
-            } else if (javaBlockStart !== -1 && javaBlockEnd !== -1) {
-                fullText = document.getText(new vscode.Range(javaBlockStart, 0, javaBlockEnd, document.lineAt(javaBlockEnd).range.end.character));
+            if (javaBlockStart !== -1) {
+                let end = javaBlockEnd;
+                if (javaBlockEnd === -1) {
+                    // Just use the current line
+                    end = currentLine;
+                }
+                fullText = document.getText(new vscode.Range(javaBlockStart, 0, end, document.lineAt(end).range.end.character));
                 lastLine = javaBlockEnd;
+            } else if (blockStart !== -1 ) {
+                let end = blockEnd;
+                if (blockEnd === -1) {
+                    // Just use the current line
+                    end = currentLine;
+                }
+                fullText = document.getText(new vscode.Range(blockStart, 0, end, document.lineAt(end).range.end.character));
+                lastLine = blockEnd;
             } else {
                 // Just use the text from the current line
                 fullText = document.lineAt(currentLine).text;
