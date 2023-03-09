@@ -55,3 +55,13 @@ Generate a new bundle using `npm run bundle`. This requires `@vscode/vsce` to be
 ```sh
 npm install -g @vscode/vsce
 ```
+
+Then use `vsce publish` to package and deploy the extension.
+
+A full order of commands typically looks like:
+
+```sh
+npm version [major|minor|patch]
+npm run bundle
+vsce publish
+```
