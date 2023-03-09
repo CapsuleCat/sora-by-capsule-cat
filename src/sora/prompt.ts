@@ -13,10 +13,13 @@ export const SORA_PROMPTS = [
     },
 ] satisfies ChatCompletionRequestMessage[];
 
+export type SoraWarning = 'noContent' | 'fileNotFound' | 'fileTooLarge' | 'fileIsBinary';
+
 export interface SoraReference {
     relativeFilePath: string;
     language: string;
     content: string;
+    warnings?: SoraWarning[];
 }
 
 export function generateReferencePrompts(references: SoraReference[]) {

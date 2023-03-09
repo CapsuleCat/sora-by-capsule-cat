@@ -73,9 +73,32 @@ export function getSubscription() {
             const uri = document.uri;
             const references = await buildReferences(text, uri);
 
+            if (references.some(ref => ref.warnings)) {
+                references.forEach(ref => {
+                    ref.warnings?.forEach(warning => {
+                        switch (warning) {
+                            case "fileIsBinary":
+                                vscode.window.showWarningMessage(`File ${ref.relativeFilePath} is binary and cannot be used as a reference.`);
+                                break;
+                            case "fileTooLarge":
+                                vscode.window.showWarningMessage(`File ${ref.relativeFilePath} is too large and cannot be used as a reference.`);
+                                break;
+                            case "fileNotFound":
+                                vscode.window.showWarningMessage(`File ${ref.relativeFilePath} was not found and cannot be used as a reference.`);
+                                break;
+                            case "noContent":
+                                vscode.window.showWarningMessage(`File ${ref.relativeFilePath} has no content.`);
+                                break;
+                        }
+                    });
+                });
+            }
+
+            const safeReferences = references.filter(ref => !ref.warnings);
+
             const sora = new Sora();
             sora.setApiKey(apiKey);
-            sora.generateText(languageId, text, references).then((response: string) => {
+            sora.generateText(languageId, text, safeReferences).then((response: string) => {
                 editor.edit((editBuilder) => {
                     // Debug
                     vscode.window.showInformationMessage(`Response: ${response}`);
@@ -128,15 +151,54 @@ async function buildReferences(text: string, baseUri: vscode.Uri): Promise<SoraR
         const uri = vscode.Uri.joinPath(baseUri, '..', match[2]);
         return uri;
     }).map(async (uri): Promise<SoraReference> => {
-        const document = await vscode.workspace.openTextDocument(uri);
-        const content = document.getText();
-        const language = document.languageId;
+        try {
+            const document = await vscode.workspace.openTextDocument(uri);
+            const language = document.languageId;
 
-        return {
-            content,
-            relativeFilePath: uri.toString(),
-            language,
-        };
+            // Check if the file is a binary file
+            if (language === 'binary') {
+                return {
+                    content: '',
+                    warnings: ['fileIsBinary'],
+                    relativeFilePath: uri.toString(),
+                    language: 'plaintext',
+                };
+            }
+
+            // Check if the file is too large
+            if (document.getText().length > 5000) {
+                return {
+                    content: '',
+                    warnings: ['fileTooLarge'],
+                    relativeFilePath: uri.toString(),
+                    language: 'plaintext',
+                };
+            }
+
+            if (document.getText().length === 0) {
+                return {
+                    content: '',
+                    warnings: ['noContent'],
+                    relativeFilePath: uri.toString(),
+                    language: 'plaintext',
+                };
+            }
+
+            const content = document.getText();
+    
+            return {
+                content,
+                relativeFilePath: uri.toString(),
+                language,
+            };
+        } catch (error) {
+            return {
+                content: '',
+                warnings: ['fileNotFound'],
+                relativeFilePath: uri.toString(),
+                language: 'plaintext',
+            };
+        }
     }));
 
     return references;
