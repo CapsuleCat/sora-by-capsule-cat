@@ -17,7 +17,7 @@ Once your API key is set, you can use Sora by typing a comment and then adding `
 
 Typing `@ChatGPT` is the trigger keyword for Sora:
 
-![Simple Sora example](./assets/simple-example.gif)
+![Simple Sora example](./assets/simple-sora.gif)
 
 Example:
 
