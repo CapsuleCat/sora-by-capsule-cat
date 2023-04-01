@@ -5,10 +5,8 @@
   "version": "0.0.4",
   "license": "MIT",
   "publisher": "CapsuleCat",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:CapsuleCat/sora-by-capsule-cat.git"
-  },
+  "icon": "assets/sora-icon.png",
+  "repository": "https://github.com/CapsuleCat/sora-by-capsule-cat.git",
   "engines": {
     "vscode": "^1.76.0"
   },

@@ -17,6 +17,8 @@ Once your API key is set, you can use Sora by typing a comment and then adding `
 
 Typing `@ChatGPT` is the trigger keyword for Sora:
 
+![Simple Sora example](./assets/simple-example.gif)
+
 Example:
 
 ```javascript
@@ -48,9 +50,7 @@ This extension contributes the following settings:
 
 ## Development
 
-This extension was developed using the VSCode Extension Generator.
-
-Generate a new bundle using `npm run bundle`. This requires `@vscode/vsce` to be installed globally:
+This extension was developed using the VSCode Extension Generator. This requires `@vscode/vsce` to be installed globally:
 
 ```sh
 npm install -g @vscode/vsce
@@ -62,6 +62,5 @@ A full order of commands typically looks like:
 
 ```sh
 npm version [major|minor|patch]
-npm run bundle
 vsce publish
 ```
