@@ -13,7 +13,18 @@ the command `Sora: Set API Key`.
 
 ## Features
 
-Once your API key is set, you can use Sora by typing a comment and then adding `@ChatGPT` to the end of the comment.
+Once your API key is set, you can use Sora one of two ways:
+
+* Hovering over a comment and clicking the `ChatGPT` button.
+* Typing a comment and then adding `@ChatGPT` to the end of the comment.
+
+### Using the ChatGPT button
+
+This is the easiest way to use Sora. Simply hover over a comment and click the `ChatGPT` button:
+
+![Simple Sora hover example](./assets/hover-sora.gif)
+
+### Using @ChatGPT
 
 Typing `@ChatGPT` is the trigger keyword for Sora:
 

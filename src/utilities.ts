@@ -27,3 +27,15 @@ export function extractResponseCode(dirty: string) {
 
     return code.trim();
 }
+
+export function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  wait: number
+): (...args: Parameters<T>) => void {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+  return function debounced(...args: Parameters<T>): void {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), wait);
+  };
+}

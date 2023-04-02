@@ -22,6 +22,10 @@
       {
         "command": "sora-by-capsule-cat.setApiKey",
         "title": "Sora: Set API Key"
+      },
+      {
+        "command": "sora-by-capsule-cat.executeSora",
+        "title": "Sora: Execute Sora"
       }
     ],
     "configuration": [
